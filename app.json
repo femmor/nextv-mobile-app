@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "nextv-mobile",
+    "slug": "nextv-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "icon": "./assets/images/icon.svg",
+    "scheme": "nextv-mobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
