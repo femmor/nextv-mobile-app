@@ -14,7 +14,7 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)" />
         </Stack>
       </SafeScreen>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
     </SafeAreaProvider>
   );
 }

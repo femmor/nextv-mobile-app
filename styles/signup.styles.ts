@@ -2,11 +2,24 @@ import { StyleSheet } from "react-native";
 import COLORS from "@/constants/COLORS";
 
 const styles = StyleSheet.create({
+    scrollViewStyle: {
+        flex: 1,
+        backgroundColor: COLORS.background,
+    },
     container: {
         flexGrow: 1,
         backgroundColor: COLORS.background,
         padding: 20,
         justifyContent: "center",
+    },
+    topIllustration: {
+        alignItems: "center",
+        width: "100%",
+    },
+    illustrationImage: {
+        width: 200,
+        height: 200,
+        resizeMode: "contain",
     },
     card: {
         backgroundColor: COLORS.cardBackground,

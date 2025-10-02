@@ -1,7 +1,6 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import COLORS from "@/constants/COLORS";
 
-const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
     container: {
@@ -19,8 +18,9 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     illustrationImage: {
-        width: width * 0.75,
-        height: width * 0.75,
+        width: 200,
+        height: 200,
+        resizeMode: "contain",
     },
     card: {
         backgroundColor: COLORS.cardBackground,
