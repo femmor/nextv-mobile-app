@@ -1,9 +1,10 @@
-import { View, Image, TextInput, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Image, TextInput, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { useState } from 'react';
 import loginStyles from '../../styles/login.styles';
 import COLORS from '@/constants/COLORS';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useAuthStore } from '@/store/authStore';
 
 interface AuthData {
     email: string;
@@ -17,11 +18,20 @@ export default function LoginScreen() {
         password: '',
         showPassword: false
     });
-    const [isLoading, setIsLoading] = useState(false);
+
+    const { login, isLoading } = useAuthStore();
 
     const router = useRouter();
 
-    const handleLogin = () => { }
+    const handleLogin = async () => {
+        const result = await login(authData.email, authData.password);
+        if (result.success) {
+
+        } else {
+            Alert.alert('Error', result.message || 'An error occurred during login. Please try again.');
+        }
+    };
+
 
     return (
         <KeyboardAvoidingView

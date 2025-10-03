@@ -9,8 +9,8 @@ interface AuthState {
     token: string | null
     user: User | null;
     isLoading?: boolean;
-    login: (token: string, user: User) => void;
-    logout: () => void;
+    login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+    logout: () => Promise<void>;
     signUp: (username: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
     checkAuth: () => Promise<void>;
 }
@@ -20,7 +20,35 @@ export const useAuthStore = create<AuthState>((set) => ({
     token: null,
     user: null,
     isLoading: false,
-    login: (token: string, user: User) => set(() => ({ isAuthenticated: true, token, user, isLoading: false })),
+    login: async (email: string, password: string) => {
+        set({ isLoading: true });
+
+        try {
+            const response = await fetch(`${apiUrl}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                await AsyncStorage.setItem('user', JSON.stringify(data.user));
+                await AsyncStorage.setItem('token', data.token);
+                set({ isAuthenticated: true, token: data.token, user: data.user, isLoading: false });
+                return { success: true, message: 'Login successful!' };
+            } else {
+                set({ isLoading: false });
+                return { success: false, message: data.message || 'Login failed' };
+            }
+        } catch (error) {
+            set({ isLoading: false });
+            console.error('Login error:', error);
+            return { success: false, message: 'An error occurred during login. Please try again.' };
+        }
+    },
     logout: async () => {
         await AsyncStorage.removeItem('user');
         await AsyncStorage.removeItem('token');
