@@ -26,7 +26,7 @@ export default function LoginScreen() {
     const handleLogin = async () => {
         const result = await login(authData.email, authData.password);
         if (result.success) {
-
+            router.push('/(tabs)');
         } else {
             Alert.alert('Error', result.message || 'An error occurred during login. Please try again.');
         }

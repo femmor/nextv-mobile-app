@@ -1,5 +1,5 @@
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, Image, Alert } from 'react-native'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import signupStyles from '../../styles/signup.styles';
@@ -25,13 +25,18 @@ export default function SignupScreen() {
 
     const router = useRouter();
 
+    // If user is already authenticated, redirect to home
+    useEffect(() => {
+        // Any side effects or cleanup can be handled here if needed in the future
+    }, []);
+
     const handleSignUp = async () => {
         const result = await signUp(signupData.fullName, signupData.email, signupData.password);
         if (!result.success) {
             Alert.alert('Error', result.message || 'An error occurred during signup. Please try again.');
         } else {
             setSignupData({ fullName: '', email: '', password: '', showPassword: false });
-            router.push('/');
+            router.push('/(tabs)');
         }
     };
 
