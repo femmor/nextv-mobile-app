@@ -1,9 +1,10 @@
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, Image } from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, Image, Alert } from 'react-native'
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import signupStyles from '../../styles/signup.styles';
 import COLORS from '@/constants/COLORS';
+import { useAuthStore } from '@/store/authStore';
 
 interface SignupData {
     fullName: string;
@@ -19,12 +20,19 @@ export default function SignupScreen() {
         password: '',
         showPassword: false
     });
-    const [isLoading, setIsLoading] = useState(false);
+
+    const { isLoading, signUp } = useAuthStore();
 
     const router = useRouter();
 
-    const handleSignup = () => {
-        // Add signup logic here
+    const handleSignUp = async () => {
+        const result = await signUp(signupData.fullName, signupData.email, signupData.password);
+        if (!result.success) {
+            Alert.alert('Error', result.message || 'An error occurred during signup. Please try again.');
+        } else {
+            setSignupData({ fullName: '', email: '', password: '', showPassword: false });
+            router.push('/');
+        }
     };
 
     return (
@@ -47,16 +55,16 @@ export default function SignupScreen() {
 
                     {/* Full Name */}
                     <View style={signupStyles.inputGroup}>
-                        <Text style={signupStyles.label}>Full Name</Text>
+                        <Text style={signupStyles.label}>Username</Text>
                         <View style={signupStyles.inputContainer}>
                             <Ionicons name="person-outline" size={20} color={COLORS.primary} style={signupStyles.inputIcon} />
                             <TextInput
                                 style={signupStyles.input}
-                                placeholder="Enter your full name"
+                                placeholder="Enter your username"
                                 placeholderTextColor={COLORS.placeholderText}
                                 value={signupData.fullName}
                                 onChangeText={(text: string) => setSignupData({ ...signupData, fullName: text })}
-                                autoCapitalize="words"
+                                autoCapitalize="none"
                                 autoCorrect={false}
                                 autoComplete="name"
                             />
@@ -113,7 +121,7 @@ export default function SignupScreen() {
                     {/* Signup Button */}
                     <TouchableOpacity
                         style={signupStyles.button}
-                        onPress={handleSignup}
+                        onPress={handleSignUp}
                         disabled={isLoading}
                     >
                         {isLoading ? (

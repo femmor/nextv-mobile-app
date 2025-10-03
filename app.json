@@ -4,7 +4,7 @@
     "slug": "nextv-movie-recommendation",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.svg",
+    "icon": "./assets/images/app-icon.svg",
     "scheme": "nextv-movie-recommendation",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
