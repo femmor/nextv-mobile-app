@@ -1,7 +1,15 @@
+import { useAuthStore } from "@/store/authStore";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { useEffect } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function HomeScreen() {
+
+  const { user, checkAuth, logout, isAuthenticated } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   return (
     <View
@@ -11,7 +19,10 @@ export default function HomeScreen() {
         alignItems: "center",
       }}
     >
-      <Text>Home Screen</Text>
+      <Text>{user ? `Welcome, ${user.username}` : "Please log in"}</Text>
+      {isAuthenticated && <TouchableOpacity onPress={logout}>
+        <Text>Log Out</Text>
+      </TouchableOpacity>}
       <Link href="/(auth)">Go to Login Screen</Link>
       <Link href="/(auth)/signup">Go to Signup Screen</Link>
     </View>

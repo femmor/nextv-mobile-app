@@ -12,6 +12,7 @@ interface AuthState {
     login: (token: string, user: User) => void;
     logout: () => void;
     signUp: (username: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+    checkAuth: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -20,7 +21,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     user: null,
     isLoading: false,
     login: (token: string, user: User) => set(() => ({ isAuthenticated: true, token, user, isLoading: false })),
-    logout: () => set(() => ({ isAuthenticated: false, token: null, user: null, isLoading: false })),
+    logout: async () => {
+        await AsyncStorage.removeItem('user');
+        await AsyncStorage.removeItem('token');
+        set({ isAuthenticated: false, token: null, user: null });
+    },
     signUp: async (username, email, password) => {
         set({ isLoading: true });
 
@@ -50,4 +55,16 @@ export const useAuthStore = create<AuthState>((set) => ({
             return { success: false, message: 'An error occurred during signup. Please try again.' };
         }
     },
+    checkAuth: async () => {
+        try {
+            const storedUser = await AsyncStorage.getItem('user');
+            const storedToken = await AsyncStorage.getItem('token');
+
+            if (storedUser && storedToken) {
+                set({ isAuthenticated: true, user: JSON.parse(storedUser), token: storedToken });
+            }
+        } catch (error) {
+            console.error('Error checking auth status:', error);
+        }
+    }
 }));
