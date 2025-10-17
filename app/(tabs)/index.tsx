@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native'
 import { Image } from 'expo-image';
 import homeStyles from '@/styles/home.styles';
-import { Rating } from '@/components';
+import { LoadingSpinner, Rating } from '@/components';
 import { formatPublishDate } from '@/lib/utils';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '@/constants/COLORS';
@@ -80,12 +80,14 @@ export default function HomeScreen() {
         }
     };
 
+    // Handle pull-to-refresh
     const handleRefresh = async () => {
         setPage(1);
         setHasMore(true);
         await fetchMovies(1, true);
     };
 
+    // Render each movie item
     const renderItem = ({ item }: { item: Movie }) => (
         <View style={homeStyles.movieCard}>
             <View style={homeStyles.movieHeader}>
@@ -114,6 +116,9 @@ export default function HomeScreen() {
             </View>
         </View>
     )
+
+    // Show loading spinner while fetching data
+    if (isLoading) return <LoadingSpinner size="large" />
 
     return (
         <View style={homeStyles.container}>
