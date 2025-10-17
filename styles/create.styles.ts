@@ -91,6 +91,9 @@ const styles = StyleSheet.create({
     starButton: {
         padding: 8,
     },
+    ratingItem: {
+        padding: 2,
+    },
     imagePicker: {
         width: "100%",
         height: 200,

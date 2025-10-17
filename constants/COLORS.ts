@@ -37,7 +37,7 @@ const COLORS = {
   textSecondary: "#404040",// A dark gray
   textDark: "#000000",     // True black
   placeholderText: "#a3a3a3", // A medium gray
-  background: "#ffffff",   // Pure white
+  background: "#fff9f9ff",   // Pure white
   disabled: "#f3f4f6",    // A very light gray for disabled elements
   disabledBackground: "#fee1e1ff", // A light gray for disabled backgrounds
   cardBackground: "#fafafa", // A very light off-white for depth

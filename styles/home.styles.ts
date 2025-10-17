@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         color: COLORS.textSecondary,
         textAlign: "center",
     },
-    bookCard: {
+    movieCard: {
         backgroundColor: COLORS.cardBackground,
         borderRadius: 16,
         marginBottom: 20,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.border,
     },
-    bookHeader: {
+    movieHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: COLORS.textPrimary,
     },
-    bookImageContainer: {
+    movieImageContainer: {
         width: "100%",
         height: 200,
         borderRadius: 12,
@@ -74,14 +74,14 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         backgroundColor: COLORS.border,
     },
-    bookImage: {
+    movieImage: {
         width: "100%",
         height: "100%",
     },
-    bookDetails: {
+    movieDetails: {
         padding: 4,
     },
-    bookTitle: {
+    movieTitle: {
         fontSize: 18,
         fontWeight: "700",
         color: COLORS.textPrimary,
@@ -90,6 +90,17 @@ const styles = StyleSheet.create({
     ratingContainer: {
         flexDirection: "row",
         marginBottom: 8,
+    },
+    ratingItem: {
+        margin: 0,
+    },
+    directorText: {
+        fontSize: 14,
+        color: COLORS.textDark,
+        marginBottom: 6,
+    },
+    bold: {
+        fontWeight: "600",
     },
     caption: {
         fontSize: 14,
@@ -113,6 +124,7 @@ const styles = StyleSheet.create({
         color: COLORS.textPrimary,
         marginTop: 16,
         marginBottom: 8,
+        textAlign: "center",
     },
     emptySubtext: {
         fontSize: 14,

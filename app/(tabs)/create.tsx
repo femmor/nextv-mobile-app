@@ -42,28 +42,21 @@ export default function CreateScreen() {
 
             // launch image library to pick image
             let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ['images', 'videos', "livePhotos"],
+                mediaTypes: ['images'],
                 allowsEditing: true,
                 aspect: [4, 3],
-                quality: 0.5, // Compress the image
+                quality: 0.3, // More aggressive compression
+                base64: true, // Request base64 directly
             });
 
             if (!result.canceled) {
                 setImage(result.assets[0].uri);
 
-                // if base64 is provided, set it to state
+                // Set base64 data (now always available since we requested it)
                 if (result.assets[0].base64) {
                     setImageBase64(result.assets[0].base64);
                 } else {
-                    // Convert to base64 if not provided
-                    const response = await fetch(result.assets[0].uri);
-                    const blob = await response.blob();
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        const base64data = reader.result as string;
-                        setImageBase64(base64data.split(',')[1]); // Remove the data URL prefix
-                    };
-                    reader.readAsDataURL(blob);
+                    Alert.alert("Error", "Failed to process image. Please try again.");
                 }
             }
         } catch (error) {
@@ -82,6 +75,16 @@ export default function CreateScreen() {
         setIsLoading(true);
 
         try {
+            // Check base64 image size (rough estimate: base64 is ~1.37x original size)
+            const estimatedSizeInBytes = (imageBase64.length * 3) / 4;
+            const estimatedSizeInMB = estimatedSizeInBytes / (1024 * 1024);
+
+            if (estimatedSizeInMB > 10) { // Limit to 10MB
+                Alert.alert("Image Too Large", "Please select a smaller image (less than 10MB).");
+                setIsLoading(false);
+                return;
+            }
+
             // Get file extension from image URI or default to jpeg
             const uriParts = image.split('.');
             const fileType = uriParts[uriParts.length - 1];
@@ -109,6 +112,9 @@ export default function CreateScreen() {
             });
 
             if (!response.ok) {
+                if (response.status === 413) {
+                    throw new Error("Image file is too large. Please select a smaller image or reduce quality.");
+                }
                 const errorData = await response.json();
                 throw new Error(errorData.message || "Failed to share movie");
             }
@@ -127,7 +133,8 @@ export default function CreateScreen() {
             // Navigate back to home screen
             router.push("/(tabs)");
         } catch (error) {
-            Alert.alert("Error", "An error occurred while sharing the movie.");
+            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred while sharing the movie.";
+            Alert.alert("Error", errorMessage);
             console.error("Submit Error: ", error);
         } finally {
             setIsLoading(false);
@@ -136,7 +143,7 @@ export default function CreateScreen() {
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} style={createStyles.scrollViewStyle}>
                 <View style={createStyles.card}>
                     <View style={createStyles.header}>
                         <Text style={createStyles.title}>Add a New Movie</Text>
@@ -192,7 +199,7 @@ export default function CreateScreen() {
                         {/* Rating Field */}
                         <View style={createStyles.formGroup}>
                             <Text style={createStyles.label}>Your Rating</Text>
-                            <Rating rating={rating} setRating={setRating} />
+                            <Rating rating={rating} setRating={setRating} isCreating />
                         </View>
 
                         {/* Image URL Field */}
