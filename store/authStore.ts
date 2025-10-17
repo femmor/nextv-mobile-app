@@ -11,6 +11,7 @@ interface AuthState {
     logout: () => Promise<void>;
     signUp: (username: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
     checkAuth: () => Promise<void>;
+    refreshUser: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -91,6 +92,27 @@ export const useAuthStore = create<AuthState>((set) => ({
             }
         } catch (error) {
             console.error('Error checking auth status:', error);
+        }
+    },
+    refreshUser: async () => {
+        try {
+            const storedToken = await AsyncStorage.getItem('token');
+
+            if (!storedToken) {
+                console.log('No token found, cannot refresh user data');
+                return;
+            }
+
+            // You might need to create a /me endpoint on your backend to get current user data
+            // For now, let's just re-parse the stored user data
+            const storedUser = await AsyncStorage.getItem('user');
+            if (storedUser) {
+                const userData = JSON.parse(storedUser);
+                console.log('Refreshed user data:', userData);
+                set({ user: userData });
+            }
+        } catch (error) {
+            console.error('Error refreshing user data:', error);
         }
     }
 }));

@@ -1,7 +1,7 @@
 // Converts the createdAt to this format: "March 2024"
-export const formatMemberSince = (dateString: string): string => {
-    const date = new Date(dateString);
-    const month = date.toLocaleString('default', { month: 'short' });
+export const formatMemberSince = (dateInput: string | Date) => {
+    const date = new Date(dateInput);
+    const month = date.toLocaleString('default', { month: 'long' });
     const year = date.getFullYear();
     return `${month} ${year}`;
 }
