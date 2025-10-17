@@ -38,11 +38,14 @@ const COLORS = {
   textDark: "#000000",     // True black
   placeholderText: "#a3a3a3", // A medium gray
   background: "#ffffff",   // Pure white
+  disabled: "#f3f4f6",    // A very light gray for disabled elements
+  disabledBackground: "#fee1e1ff", // A light gray for disabled backgrounds
   cardBackground: "#fafafa", // A very light off-white for depth
   inputBackground: "#f5f5f5", // A light gray for inputs
   border: "#e5e5e5",       // A light gray border
   white: "#ffffff",
   black: "#000000",
+  rating: "#fcd34d", // A bright yellow for ratings
 };
 
 // Playful & Vibrant Color Palette

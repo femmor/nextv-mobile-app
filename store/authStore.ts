@@ -1,9 +1,7 @@
 import { User } from '@/types/User';
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const apiUrl = process.env.EXPO_PUBLIC_BACKEND_URL!
-
+import { apiUrl } from '@/constants/API';
 interface AuthState {
     isAuthenticated: boolean;
     token: string | null

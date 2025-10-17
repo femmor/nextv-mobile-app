@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: 20,
         marginVertical: 16,
+        marginHorizontal: 16,
         shadowColor: COLORS.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
@@ -114,7 +115,6 @@ const styles = StyleSheet.create({
         marginTop: 8,
     },
     button: {
-        backgroundColor: COLORS.primary,
         borderRadius: 12,
         height: 50,
         flexDirection: "row",
@@ -135,6 +135,9 @@ const styles = StyleSheet.create({
     buttonIcon: {
         marginRight: 8,
     },
+    textColor: {
+        color: COLORS.textDark,
+    }
 });
 
 export default styles;
