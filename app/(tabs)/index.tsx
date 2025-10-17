@@ -2,7 +2,7 @@ import { apiUrl } from '@/constants/API';
 import { useAuthStore } from '@/store/authStore';
 import { Movie } from '@/types/Movie';
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, RefreshControl } from 'react-native'
 import { Image } from 'expo-image';
 import homeStyles from '@/styles/home.styles';
 import { LoadingSpinner, Rating } from '@/components';
@@ -131,7 +131,15 @@ export default function HomeScreen() {
                 onEndReached={handleLoadMore}
                 onEndReachedThreshold={0.5}
                 refreshing={isRefreshing}
-                onRefresh={handleRefresh}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={handleRefresh}
+                        colors={[COLORS.primary]}
+                        tintColor={COLORS.primary}
+                    />
+                }
+                // onRefresh={handleRefresh}
                 ListHeaderComponent={<View style={homeStyles.header}>
                     <Text style={homeStyles.headerTitle}><Ionicons
                         name="film" size={24} color="black"
