@@ -2,7 +2,7 @@ import { apiUrl } from '@/constants/API';
 import { useAuthStore } from '@/store/authStore';
 import { Movie } from '@/types/Movie';
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator } from 'react-native'
 import { Image } from 'expo-image';
 import homeStyles from '@/styles/home.styles';
 import { Rating } from '@/components';
@@ -21,13 +21,13 @@ export default function HomeScreen() {
 
     const fetchMovies = useCallback(async (pageNum = 1, refresh = false) => {
         try {
-            if (isRefreshing) {
+            if (refresh) {
                 setIsRefreshing(true);
             } else if (pageNum === 1) {
                 setIsLoading(true);
             }
 
-            const response = await fetch(`${apiUrl}/movies?page=${pageNum}&limit=5`, {
+            const response = await fetch(`${apiUrl}/movies?page=${pageNum}&limit=2`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -44,12 +44,16 @@ export default function HomeScreen() {
                 throw new Error(data.message || 'Failed to fetch movies');
             }
 
-            // TODO: Causes duplicates on refresh, fix later
-            // setMovies(prevMovies => refresh ? data.movies : [...prevMovies, ...data.movies]);
-
-            // Fixes duplicates on refresh
-            const uniqueMovies = refresh || pageNum === 1 ? data.movies : Array.from(new Set([...movies, ...data.movies].map((m) => m._id))).map((id) => [...movies, ...data.movies].find((m) => m._id === id));
-            setMovies(uniqueMovies);
+            setMovies(prevMovies => {
+                if (refresh || pageNum === 1) {
+                    return data.movies;
+                } else {
+                    // Prevent duplicates by checking if movie ID already exists
+                    const existingIds = new Set(prevMovies.map(movie => movie._id));
+                    const newMovies = data.movies.filter((movie: Movie) => !existingIds.has(movie._id));
+                    return [...prevMovies, ...newMovies];
+                }
+            });
 
             setHasMore(pageNum < data.totalPages);
             setPage(pageNum);
@@ -57,18 +61,30 @@ export default function HomeScreen() {
         } catch (error) {
             console.log("Error fetching movies", error)
         } finally {
-            if (isRefreshing) {
+            if (refresh) {
                 setIsRefreshing(false);
-            } else setIsLoading(false);
+            } else {
+                setIsLoading(false);
+            }
         }
-    }, [token, logout, isRefreshing, movies]);
+    }, [token, logout]);
 
 
     useEffect(() => {
-        fetchMovies();
+        fetchMovies(1, false);
     }, [fetchMovies]);
 
-    const handleLoadMore = async () => { }
+    const handleLoadMore = async () => {
+        if (hasMore && !isLoading && !isRefreshing) {
+            await fetchMovies(page + 1);
+        }
+    };
+
+    const handleRefresh = async () => {
+        setPage(1);
+        setHasMore(true);
+        await fetchMovies(1, true);
+    };
 
     const renderItem = ({ item }: { item: Movie }) => (
         <View style={homeStyles.movieCard}>
@@ -107,6 +123,10 @@ export default function HomeScreen() {
                 renderItem={renderItem}
                 contentContainerStyle={homeStyles.listContainer}
                 showsVerticalScrollIndicator={false}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
+                refreshing={isRefreshing}
+                onRefresh={handleRefresh}
                 ListHeaderComponent={<View style={homeStyles.header}>
                     <Text style={homeStyles.headerTitle}><Ionicons
                         name="film" size={24} color="black"
@@ -121,6 +141,13 @@ export default function HomeScreen() {
                         <Text style={homeStyles.emptyText}>No recommendations yet.</Text>
                         <Text style={homeStyles.emptySubtext}>Be the first to share your favorite movie!</Text>
                     </View>
+                }
+                ListFooterComponent={
+                    hasMore && movies.length > 0 && !isRefreshing ? (
+                        <View style={{ paddingVertical: 20 }}>
+                            <ActivityIndicator size="small" color={COLORS.primary} />
+                        </View>
+                    ) : null
                 }
             />
         </View>
