@@ -37,6 +37,7 @@ export default function ProfileScreen() {
             console.error(error);
         } finally {
             setIsLoading(false);
+            setIsRefreshing(false);
         }
     }, [token]);
 

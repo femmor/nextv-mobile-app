@@ -1,5 +1,5 @@
 import { Movie } from "@/types/Movie";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
 
 import profileStyles from "@/styles/profile.styles";
 import { Image } from "expo-image";
@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import COLORS from "@/constants/COLORS";
 import { apiUrl } from "@/constants/API";
 import { useAuthStore } from "@/store/authStore";
+import { useState } from "react";
 
 interface MovieRecommendationCardProps {
     movie: Movie;
@@ -18,6 +19,7 @@ interface MovieRecommendationCardProps {
 const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCardProps) => {
 
     const { token } = useAuthStore();
+    const [isLoading, setIsLoading] = useState(false);
 
     const confirmDelete = () => {
         Alert.alert(
@@ -31,6 +33,7 @@ const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCard
     }
 
     const handleDelete = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch(`${apiUrl}/movies/${movie._id}`, {
                 method: "DELETE",
@@ -42,12 +45,15 @@ const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCard
             if (!response.ok) {
                 throw new Error("Failed to delete movie");
             }
+            Alert.alert("Success", "Movie recommendation deleted successfully.");
             // Optionally, you can add a callback or state update here to remove the movie from the list in the UI
             fetchMovies();
 
         } catch (error) {
             console.error("Error deleting movie:", error);
             Alert.alert("Error", "An error occurred while deleting the movie. Please try again.");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -65,7 +71,7 @@ const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCard
             </View>
 
             <TouchableOpacity style={profileStyles.deleteButton} onPress={confirmDelete}>
-                <Ionicons name="trash-outline" size={20} color={COLORS.primary} />
+                {isLoading ? <ActivityIndicator size="small" color={COLORS.white} /> : <Ionicons name="trash-outline" size={24} color={COLORS.white} />}
             </TouchableOpacity>
         </View>
     )
