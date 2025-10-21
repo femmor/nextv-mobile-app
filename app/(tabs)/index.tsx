@@ -6,7 +6,7 @@ import { View, Text, FlatList, ActivityIndicator, RefreshControl } from 'react-n
 import { Image } from 'expo-image';
 import homeStyles from '@/styles/home.styles';
 import { LoadingSpinner, Rating } from '@/components';
-import { formatPublishDate } from '@/lib/utils';
+import { formatPublishDate, truncateText } from '@/lib/utils';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '@/constants/COLORS';
 
@@ -108,7 +108,7 @@ export default function HomeScreen() {
                     <Rating rating={item.rating} />
                 </View>
                 {item.director ? <Text style={homeStyles.directorText}><Text style={homeStyles.bold}>Directed by:</Text> {item.director}</Text> : null}
-                {item.caption ? <Text style={homeStyles.caption}>{item.caption}</Text> : null}
+                {item.caption ? <Text style={homeStyles.caption}>{truncateText(item.caption, 80)}</Text> : null}
             </View>
 
             <View>

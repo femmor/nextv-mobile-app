@@ -12,3 +12,10 @@ export const formatPublishDate = (dateString: string): string => {
     const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+
+export const truncateText = (text: string, maxLength: number): string => {
+    if (text.length <= maxLength) {
+        return text;
+    }
+    return text.slice(0, maxLength) + '...';
+}

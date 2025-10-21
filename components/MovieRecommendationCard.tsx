@@ -4,7 +4,7 @@ import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-na
 import profileStyles from "@/styles/profile.styles";
 import { Image } from "expo-image";
 import Rating from "./Rating";
-import { formatPublishDate } from "@/lib/utils";
+import { formatPublishDate, truncateText } from "@/lib/utils";
 import { Ionicons } from "@expo/vector-icons";
 import COLORS from "@/constants/COLORS";
 import { apiUrl } from "@/constants/API";
@@ -20,6 +20,7 @@ const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCard
 
     const { token } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
+    const [deletingMovieId, setDeletingMovieId] = useState<string | null>(null);
 
     const confirmDelete = () => {
         Alert.alert(
@@ -34,6 +35,8 @@ const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCard
 
     const handleDelete = async () => {
         setIsLoading(true);
+        setDeletingMovieId(movie._id);
+
         try {
             const response = await fetch(`${apiUrl}/movies/${movie._id}`, {
                 method: "DELETE",
@@ -54,7 +57,12 @@ const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCard
             Alert.alert("Error", "An error occurred while deleting the movie. Please try again.");
         } finally {
             setIsLoading(false);
+            setDeletingMovieId(null);
         }
+    }
+
+    if (isLoading) {
+        return <ActivityIndicator size="small" color={COLORS.primary} />;
     }
 
     return (
@@ -66,12 +74,12 @@ const MovieRecommendationCard = ({ movie, fetchMovies }: MovieRecommendationCard
                     {/* Assuming a Rating component exists */}
                     <Rating rating={movie.rating} />
                 </View>
-                {movie.caption ? <Text style={profileStyles.movieCaption}>{movie.caption}</Text> : null}
+                {movie.caption ? <Text style={profileStyles.movieCaption}>{truncateText(movie.caption, 80)}</Text> : null}
                 <Text style={profileStyles.movieDate}>Shared on: {formatPublishDate(movie.createdAt)}</Text>
             </View>
 
             <TouchableOpacity style={profileStyles.deleteButton} onPress={confirmDelete}>
-                {isLoading ? <ActivityIndicator size="small" color={COLORS.white} /> : <Ionicons name="trash-outline" size={24} color={COLORS.white} />}
+                {deletingMovieId === movie._id ? <ActivityIndicator size="small" color={COLORS.primary} /> : <Ionicons name="trash-outline" size={24} color={COLORS.primary} />}
             </TouchableOpacity>
         </View>
     )
