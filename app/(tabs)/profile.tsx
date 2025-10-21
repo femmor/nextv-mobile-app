@@ -18,6 +18,13 @@ export default function ProfileScreen() {
     const router = useRouter();
 
     const fetchMovies = useCallback(async () => {
+        // Don't fetch if there's no token (user is not authenticated)
+        if (!token) {
+            setIsLoading(false);
+            setIsRefreshing(false);
+            return;
+        }
+
         try {
             setIsLoading(true);
 
