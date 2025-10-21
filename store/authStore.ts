@@ -7,6 +7,7 @@ interface AuthState {
     token: string | null
     user: User | null;
     isLoading?: boolean;
+    isCheckingAuth?: boolean;
     login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
     logout: () => Promise<void>;
     signUp: (username: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
@@ -19,6 +20,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     token: null,
     user: null,
     isLoading: false,
+    isCheckingAuth: true,
     login: async (email: string, password: string) => {
         set({ isLoading: true });
 
@@ -92,6 +94,8 @@ export const useAuthStore = create<AuthState>((set) => ({
             }
         } catch (error) {
             console.error('Error checking auth status:', error);
+        } finally {
+            set({ isCheckingAuth: false });
         }
     },
     refreshUser: async () => {

@@ -19,7 +19,7 @@ export default function LoginScreen() {
         showPassword: false
     });
 
-    const { login, isLoading } = useAuthStore();
+    const { login, isLoading, isCheckingAuth } = useAuthStore();
 
     const router = useRouter();
 
@@ -32,6 +32,9 @@ export default function LoginScreen() {
         }
     };
 
+    if (isCheckingAuth) {
+        return null;
+    }
 
     return (
         <KeyboardAvoidingView
