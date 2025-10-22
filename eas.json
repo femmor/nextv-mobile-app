@@ -37,8 +37,8 @@
     "production": {
       "ios": {
         "appleId": "fegomson@gmail.com",
-        "ascAppId": "YOUR_ASC_APP_ID",
-        "appleTeamId": "YOUR_APPLE_TEAM_ID"
+        "ascAppId": "6754302648",
+        "appleTeamId": "P26R7CTDUB"
       },
       "android": {
         "serviceAccountKeyPath": "./pc-api-key.json",
