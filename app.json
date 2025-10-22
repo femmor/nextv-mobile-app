@@ -4,7 +4,7 @@
     "slug": "nextv-movie-recommendation",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/app-icon.svg",
+    "icon": "./assets/images/ios-app-icon.png",
     "scheme": "nextv-movie-recommendation",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,7 +14,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.nextv.movierecommendation",
       "buildNumber": "1",
-      "icon": "./assets/images/app-icon.svg"
+      "icon": "./assets/images/ios-app-icon.png",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.nextv.movierecommendation",
@@ -42,7 +45,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/app-icon.svg",
+          "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -55,6 +58,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6dbc34bf-51da-411a-8d3b-02495b65c046"
+      }
     }
   }
 }
