@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "NextV Movie Recommendation",
+    "name": "NextV",
     "slug": "nextv-movie-recommendation",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/ios-app-icon.png",
-    "scheme": "nextv-movie-recommendation",
+    "scheme": "nextv",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "privacy": "public",
