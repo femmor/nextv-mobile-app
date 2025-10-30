@@ -7,7 +7,7 @@ import { Movie } from '@/types/Movie';
 import profileStyles from '@/styles/profile.styles';
 import { useRouter } from 'expo-router';
 import { apiUrl } from '@/constants/API';
-import { LogoutButton, MovieRecommendationCard, ProfileHeader } from '@/components';
+import { DeleteAccountButton, LogoutButton, MovieRecommendationCard, ProfileHeader } from '@/components';
 
 export default function ProfileScreen() {
     const { token } = useAuthStore();
@@ -85,6 +85,7 @@ export default function ProfileScreen() {
                 contentContainerStyle={profileStyles.moviesList}
                 showsVerticalScrollIndicator={false}
             />
+            <DeleteAccountButton />
         </View>
     )
 }

@@ -24,11 +24,23 @@ export default function LoginScreen() {
     const router = useRouter();
 
     const handleLogin = async () => {
+        // Client-side validation
+        if (!authData.email.trim() || !authData.password.trim()) {
+            Alert.alert('Error', 'Please enter both email and password.');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(authData.email.trim())) {
+            Alert.alert('Error', 'Please enter a valid email address.');
+            return;
+        }
+
         const result = await login(authData.email, authData.password);
         if (result.success) {
             router.push('/(tabs)');
         } else {
-            Alert.alert('Error', result.message || 'An error occurred during login. Please try again.');
+            Alert.alert('Login Error', result.message || 'An error occurred during login. Please try again.');
         }
     };
 

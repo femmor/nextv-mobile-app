@@ -31,9 +31,31 @@ export default function SignupScreen() {
     }, []);
 
     const handleSignUp = async () => {
+        // Client-side validation
+        if (!signupData.fullName.trim() || !signupData.email.trim() || !signupData.password.trim()) {
+            Alert.alert('Error', 'Please fill in all fields.');
+            return;
+        }
+
+        if (signupData.fullName.trim().length < 3) {
+            Alert.alert('Error', 'Username must be at least 3 characters long.');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(signupData.email.trim())) {
+            Alert.alert('Error', 'Please enter a valid email address.');
+            return;
+        }
+
+        if (signupData.password.length < 6) {
+            Alert.alert('Error', 'Password must be at least 6 characters long.');
+            return;
+        }
+
         const result = await signUp(signupData.fullName, signupData.email, signupData.password);
         if (!result.success) {
-            Alert.alert('Error', result.message || 'An error occurred during signup. Please try again.');
+            Alert.alert('Signup Error', result.message || 'An error occurred during signup. Please try again.');
         } else {
             setSignupData({ fullName: '', email: '', password: '', showPassword: false });
             router.push('/(tabs)');
