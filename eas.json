@@ -41,8 +41,8 @@
         "appleTeamId": "P26R7CTDUB"
       },
       "android": {
-        "serviceAccountKeyPath": "./pc-api-key.json",
-        "track": "internal"
+        "serviceAccountKeyPath": "./google_service_account.json",
+        "track": "production"
       }
     }
   }
