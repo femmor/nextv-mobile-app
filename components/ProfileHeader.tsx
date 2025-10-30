@@ -26,17 +26,22 @@ const ProfileHeader = () => {
     };
 
     return (
-        <View style={profileStyles.profileHeader}>
-            <Image
-                source={{ uri: user?.profileImage }}
-                style={profileStyles.profileImage}
-                contentFit="cover"
-            />
-            <View style={profileStyles.profileInfo}>
-                <Text style={profileStyles.username}>{user?.username}</Text>
-                <Text style={profileStyles.email}>{user?.email}</Text>
-                <Text style={profileStyles.memberSince}>Member since: {getMemberSinceText()}</Text>
+        <View>
+            <View style={profileStyles.profileHeader}>
+                <Image
+                    source={{ uri: user?.profileImage }}
+                    style={profileStyles.profileImage}
+                    contentFit="cover"
+                />
+                <View style={profileStyles.profileInfo}>
+                    <Text style={profileStyles.username}>{user?.username}</Text>
+                    <Text style={profileStyles.email}>{user?.email}</Text>
+                    <Text style={profileStyles.memberSince}>Member since: {getMemberSinceText()}</Text>
+
+                </View>
+
             </View>
+
         </View>
     )
 }

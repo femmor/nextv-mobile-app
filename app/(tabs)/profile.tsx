@@ -85,7 +85,9 @@ export default function ProfileScreen() {
                 contentContainerStyle={profileStyles.moviesList}
                 showsVerticalScrollIndicator={false}
             />
-            <DeleteAccountButton />
+            <View style={profileStyles.deleteAccountContainer}>
+                <DeleteAccountButton />
+            </View>
         </View>
     )
 }

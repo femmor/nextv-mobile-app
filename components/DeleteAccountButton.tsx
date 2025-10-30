@@ -64,15 +64,16 @@ export default function DeleteAccountButton() {
                     backgroundColor: '#ffebee',
                     borderRadius: 8,
                     marginTop: 20,
+                    justifyContent: 'center',
                 }}
                 onPress={showDeleteConfirmation}
             >
                 <Ionicons name="trash-outline" size={20} color="#d32f2f" />
                 <Text style={{
-                    marginLeft: 12,
+                    marginLeft: 8,
                     color: '#d32f2f',
                     fontSize: 16,
-                    fontWeight: '500'
+                    fontWeight: '500',
                 }}>
                     Delete Account
                 </Text>

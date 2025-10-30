@@ -168,6 +168,12 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         fontSize: 14,
     },
+    deleteAccountContainer: {
+        marginTop: 30,
+        alignItems: "center",
+        borderTopColor: COLORS.border,
+        borderTopWidth: 1,
+    },
 });
 
 export default styles;
