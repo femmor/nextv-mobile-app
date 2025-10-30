@@ -16,7 +16,8 @@
       "buildNumber": "1",
       "icon": "./assets/images/ios-app-icon.png",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "NextV needs access to your photo library to let you select movie poster images when sharing movie recommendations. For example, when you add a movie like 'Inception' to your recommendations, you can choose a poster image from your photos to make your recommendation more visually appealing and help other users discover great movies."
       }
     },
     "android": {
