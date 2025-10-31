@@ -92,15 +92,14 @@ export default function HomeScreen() {
         <View style={homeStyles.movieCard}>
             <View style={homeStyles.movieHeader}>
                 <View style={homeStyles.userInfo}>
-                    <Image source={{ uri: item.user.profileImage }} style={homeStyles.avatar} contentFit='cover' />
-                    <Text style={homeStyles.username}>{item.user.username}</Text>
+                    <Image source={{ uri: item?.user?.profileImage }} style={homeStyles.avatar} contentFit='cover' />
+                    <Text style={homeStyles.username}>{item?.user?.username}</Text>
                 </View>
             </View>
 
             <View style={homeStyles.movieImageContainer}>
                 <Image source={{ uri: item.image }} style={homeStyles.movieImage} />
             </View>
-
 
             <View style={homeStyles.movieDetails}>
                 <Text style={homeStyles.movieTitle}>{item.title} ({item.releaseYear})</Text>
